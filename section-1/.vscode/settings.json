@@ -1,4 +1,9 @@
 {
-  "editor.fontSize": 16,
-  "window.zoomLevel": 1
+  "window.zoomLevel": 2,
+  "editor.fontSize": 10,
+  "screencastMode.fontSize": 20,
+  "markdown.preview.fontSize": 10,
+  "debug.console.fontSize": 10,
+  "scm.inputFontSize": 10,
+  "mssql.resultsFontSize": 10
 }
