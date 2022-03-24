@@ -1,6 +1,6 @@
 # Vue development tools (Part 1)
 
-### `Key Word: basics / passing value / html + vue cdn.`
+### `Key Word: basics / passing data or methods / html + vue CDN.`
 
 - #### Click here: [BACK TO NAVIGASTION](https://github.com/DonghaoWu/WebDev-tools-demo/blob/master/README.md)
 
@@ -10,13 +10,7 @@
 
 ### `Check Dependencies & Tools:`
 
--
-
-```diff
-+
-```
-
----
+- ***
 
 #### `本章背景：`
 
@@ -27,12 +21,13 @@
   - 向 element 内容传递变量需要加 `{{variable name}}`
   - 向 element attribute 传递变量需要加 `v-bind:<attribute name>="variable name"`
   - 向一个空的 element 传递一个 html tag 变量 `v-html="variable name"`
+  - 向 html 传递 method 的运算结果也是一样的规则，不同的是 method 需要加上 `()`
 
 ### <span id="1.0">`Brief Contents & codes position`</span>
 
 - #### Click here: [BACK TO NAVIGASTION](https://github.com/DonghaoWu/WebDev-tools-demo/blob/master/README.md)
 
-- [1.1 HTML + Vue cdn.](#1.1)
+- [1.1 HTML + Vue CDN.](#1.1)
 - [1.2 Create a Vue instance in a js file and connect it to html file.](#1.2)
 - [1.3 Pass the value from js file to html file.](#1.3)
 - [1.4 Create methods.](#1.4)
@@ -40,14 +35,17 @@
 
 ---
 
-### <span id="1.1">`Step1: HTML + Vue cdn.`</span>
+### <span id="1.1">`Step1: HTML + Vue CDN.`</span>
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
+  1. Add Vue cdn as a script in html file --- `<head>`
+
   ```diff
-  + Add Vue cdn as a script in html file --- <head>
-  - <script src="https://unpkg.com/vue@next" defer></script>
+  + <script src="https://unpkg.com/vue@next" defer></script>
   ```
+
+  **`Location: ./index.html`**
 
   ```html
   <!DOCTYPE html>
@@ -62,7 +60,6 @@
       />
       <link rel="stylesheet" href="styles.css" />
       <script src="https://unpkg.com/vue@next" defer></script>
-      <script src="app.js" defer></script>
     </head>
 
     <body>
@@ -82,7 +79,19 @@
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
-  1. Add id into a html element --- <section> part.
+  1. Add a script into head secion.
+
+  ```diff
+  + <script src="app.js" defer></script>
+  ```
+
+  2. Add id into a html element --- `<section>` part.
+
+  ```diff
+  + <section id="user-goal"></section>
+  ```
+
+  **`Location: ./index.html`**
 
   ```html
   <!DOCTYPE html>
@@ -109,9 +118,7 @@
   </html>
   ```
 
-  2. Create a Vue instance.
-
-  **`Location: ./`**
+  3. Create a Vue instance.
 
   ```js
   const app = Vue.createApp({});
@@ -129,7 +136,7 @@
 
   1. Add a new function property in instance. Its name is `data`
 
-  **`Location: ./`**
+  **`Location: ./app.js`**
 
   ```js
   const app = Vue.createApp({
@@ -147,7 +154,11 @@
 
   2. Render `finalGoal` in the html file.
 
-  **`Location: ./`**
+  ```diff
+  + <p>{{finalGoal}}</p>
+  ```
+
+  **`Location: ./index.html`**
 
   ```html
   <!DOCTYPE html>
@@ -175,9 +186,13 @@
   </html>
   ```
 
-  3. Add `vueLink` as a <a> tag `href` attribute.
+  3. Add `vueLink` as an `<a>` tag `href` attribute.
 
-  **`Location: ./`**
+  ```diff
+  + <p>Learn more <a v-bind:href="vueLink">About Vue</a>.</p>
+  ```
+
+  **`Location: ./index.html`**
 
   ```html
   <!DOCTYPE html>
@@ -208,7 +223,7 @@
 
   4. Pass a html element data into html file.
 
-  **`Location: ./`**
+  **`Location: ./index.html`**
 
   ```html
   <!DOCTYPE html>
@@ -240,7 +255,7 @@
 
 #### `Comment:`
 
-1. 将变量传递到 content / attribute 是方式不一样的。
+1. 将变量传递到 content / attribute 是方式不一样的，一个是使用 {{}}，一个是使用 `v-bind:`.
 2. 传递一个 html element data 比较少用，但方式不一样，使用的是 v-html 关键词。
 
 ### <span id="1.4">`Step4: Create methods and pass them into html file.`</span>
@@ -248,6 +263,8 @@
 - #### Click here: [BACK TO CONTENT](#1.0)
 
   1. 添加 methods 属性
+
+    **`Location: ./app.js`**
 
   - 主要代码：
 
@@ -321,6 +338,12 @@
 
   1. 把 method 的结果显示在 element 的 content 中。
 
+
+  ```diff
+  + <p>{{outputGoalUsingStaticData()}}</p>
+  + <p>{{outputGoalUsingSelfData()}}</p>
+  ```
+
   ```html
   <!DOCTYPE html>
   <html lang="en">
@@ -355,6 +378,10 @@
 
   2. 把 method 返回的 data 导进 element 的 attribute 之中。
 
+  ```diff
+  + <input v-bind:value="outputGoalUsingSelfData()" />
+  ```
+
   ```html
   <!DOCTYPE html>
   <html lang="en">
@@ -382,7 +409,7 @@
         <p>{{outputGoalUsingStaticData()}}</p>
         <p>{{outputGoalUsingSelfData()}}</p>
         <p>Learn more <a v-bind:href="vueLink">About Vue</a>.</p>
-        <input v-bind:value="outputGoalUsingSelfData()"/>
+        <input v-bind:value="outputGoalUsingSelfData()" />
       </section>
     </body>
   </html>
