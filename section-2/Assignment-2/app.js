@@ -10,7 +10,7 @@ const app = Vue.createApp({
       alert('Welcome~~~');
     },
     handleInput1(event) {
-      console.log('keydown ===>')
+      console.log('keydown ===>', event.target.value === '');
       this.input1 = event.target.value;
     },
     handleInput2(event) {

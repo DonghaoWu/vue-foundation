@@ -22,6 +22,10 @@
   - 常见的 listener type: `keyup / keydown / input / click / submit`
   - method 作为 listener 的时候， `()`可写可不写。
 
+  - keydown 为什么会有延迟效果？
+    - keydown 时间触发的时候所读取的 event.target.value `是上一个按键的时候留下的 value`，也就是说 keydown 触发的时候没有更新 event.target.value，也就是不能引用当前按键值。
+    - 如果之前没有任何输入，则 keydown 触发时引用的 event.target.value 的值是空字符串，即 "".
+
 ### <span id="1.0">`Brief Contents & codes position`</span>
 
 - #### Click here: [BACK TO NAVIGASTION](https://github.com/DonghaoWu/WebDev-tools-demo/blob/master/README.md)
