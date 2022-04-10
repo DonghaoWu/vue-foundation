@@ -20,13 +20,17 @@
       <section id="monster" class="container">
         <h2>Monster Health</h2>
         <div class="healthbar">
-          <div class="healthbar__value" :style="monsterHealthBarStyles"></div>
+          <div class="healthbar__value" :style="monsterHealthBarStyles">
+            <span v-if="monsterHealth > 0">{{`${monsterHealth}%`}}</span>
+          </div>
         </div>
       </section>
       <section id="player" class="container">
         <h2>Your Health</h2>
         <div class="healthbar">
-          <div class="healthbar__value" :style="playerHealthBarStyles"></div>
+          <div class="healthbar__value" :style="playerHealthBarStyles">
+            <span v-if="playerHealth > 0">{{`${playerHealth}%`}}</span>
+          </div>
         </div>
       </section>
       <section class="container" v-if="winner">

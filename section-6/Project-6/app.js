@@ -88,6 +88,7 @@ const app = Vue.createApp({
     monsterHealthBarStyles() {
       if (this.monsterHealth <= 0) {
         this.addLogMessage('player', 'wins', 0);
+        this.monsterHealth = 0;
         return { width: '0%' };
       }
       return { width: `${this.monsterHealth}%` };
@@ -95,6 +96,7 @@ const app = Vue.createApp({
     playerHealthBarStyles() {
       if (this.playerHealth <= 0) {
         this.addLogMessage('monster', 'wins', 0);
+        this.playerHealth = 0;
         return { width: '0%' };
       }
       return { width: this.playerHealth + '%' };
