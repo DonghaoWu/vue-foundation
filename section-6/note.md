@@ -17,3 +17,77 @@
 6. 同样道理，在 tag attribute 中的 v-bind 后面的双引号里面可以写任何 JS code
 
 7. 容易混淆的是在 :style 和 :class 后面双引号后添加的是一个 js 里面的 object，这里牵涉的是另外一个规则，但可以确定的是 object 里面都是 JS code
+
+---
+
+### Section 5 Vue behind the scenes
+
+1. Vue is reactive
+
+2. 使用 proxy + setter + getter 来说明 Vue 的原理。
+
+```js
+const data = {
+  message: 'hello',
+};
+
+const handler = {
+  set(target, key, value) {
+    if (key === 'message') {
+      target.longMessage = value + ' World';
+    }
+    target[key] = value;
+  },
+};
+
+const proxy = new Proxy(data, handler);
+
+proxy.message = 'Hello!!!!!';
+```
+
+3. multiple apps
+
+4. templates
+
+```js
+const app = Vue.createApp({
+  template: `<p> {{message}} </p>`,
+  data() {
+    return {
+      message: 'hello',
+    };
+  },
+});
+```
+
+5. Working with Refs
+
+```html
+<input type="text" ref="userText" />
+```
+
+```js
+setText(){
+  console.dir(this.$refs.userText)
+  this.message = this.$refs.userText.value;
+}
+```
+
+6. How Vue updates the DOM, virturl DOM
+
+7. Vue lifecycle
+
+```diff
++ beforeCreate()
++ created()
++ beforeMount()
++ mounted()
++ beforeUpdate()
++ updated()
++ beoreUnmounted()
++ unmounted()
+```
+
+- 在 chrome 的 inspect 的 sources tag 中加入 breakpoint，就可以观察多个 breakpoint 之间的执行先后顺序，这个是一直想要学的调试工具。
+
+8. 
