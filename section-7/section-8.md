@@ -307,7 +307,7 @@
     </friend-contact>
     ```
 
-- 这种情况是不需要加 : 的，除了最后一个因为 true 是 JS 规则里面的产物，所以要加 : 然后 = 右边才可以使用 JS code
+- 这种情况是不需要加 ':' 的，除了最后一个因为 true 是 JS 规则里面的产物，所以要加 ':' 然后 '=' 右边才可以使用 JS code
 
 - `除此之外，这种情况在 child 中也还需要使用 props 去承接 custom attribute data。`
 
@@ -415,7 +415,6 @@
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
-  1.
 
 #### `Comment:`
 
