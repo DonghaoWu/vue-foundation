@@ -153,8 +153,12 @@ $ npm run serve
   1. 第二种方式的实现是在 vue cli 中生成的 project 中。
 
   ```diff
-  # 定义
-  + 参考 FriendContact.vue
+  # 定义 FriendContact 并出口
+  + <script>{
+    export default {
+
+    }
+  }</script>
 
   # 引进
   + import FriendContact from './components/FriendContact';
