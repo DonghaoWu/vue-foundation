@@ -1,6 +1,6 @@
 # Vue development tools (Part 7)
 
-### `Key Word: 阶段总结.`
+### `Key Word: component structure.`
 
 - #### Click here: [BACK TO NAVIGASTION](https://github.com/DonghaoWu/WebDev-tools-demo/blob/master/README.md)
 

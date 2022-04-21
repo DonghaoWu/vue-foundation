@@ -3,6 +3,7 @@
     <header>
       <h1>My Friends</h1>
     </header>
+    <new-friend @add-contact="addContact"></new-friend>
     <ul>
       <friend-contact
         v-for="friend in friends"
@@ -12,6 +13,8 @@
         :phone-number="friend.phone"
         :email-address="friend.email"
         :is-favorite="friend.isFavorite"
+        v-on:toggle-favorite="toggleFavorite"
+        @delete-contact="deleteContact"
       ></friend-contact>
     </ul>
   </section>
@@ -23,14 +26,14 @@ export default {
     return {
       friends: [
         {
-          id: 'manuel',
+          id: '001',
           name: 'Manuel Lorenz',
           phone: '0123 45678 90',
           email: 'manuel@localhost.com',
           isFavorite: true,
         },
         {
-          id: 'julie',
+          id: '002',
           name: 'Julie Jones',
           phone: '0987 654421 21',
           email: 'julie@localhost.com',
@@ -38,6 +41,27 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    toggleFavorite(friendId) {
+      const identifiedFriend = this.friends.find(
+        (friend) => friend.id === friendId
+      );
+      identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
+    },
+    addContact({ inputName, inputPhoneNumber, inputEmail }) {
+      const newFriendContact = {
+        id: new Date().toISOString(),
+        name: inputName,
+        phone: inputPhoneNumber,
+        email: inputEmail,
+        isFavorite: false,
+      };
+      this.friends.push(newFriendContact);
+    },
+    deleteContact(friendId) {
+      this.friends = this.friends.filter((friend) => friend.id !== friendId);
+    },
   },
 };
 </script>

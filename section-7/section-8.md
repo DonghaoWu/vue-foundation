@@ -1,6 +1,6 @@
 # Vue development tools (Part 8)
 
-### `Key Word: 阶段总结.`
+### `Key Word: props / custom events between components.`
 
 - #### Click here: [BACK TO NAVIGASTION](https://github.com/DonghaoWu/WebDev-tools-demo/blob/master/README.md)
 
@@ -63,6 +63,70 @@
     };
     </script>
     ```
+
+    - 传递 props 的规则
+
+      ```diff
+      # 传递 (App.vue)
+      + <friend-contact
+          v-for="friend in friends"
+          v-bind:key="friend.id"
+          :id="friend.id"
+          :name="friend.name"
+          :phone-number="friend.phone"
+          :email-address="friend.email"
+          :is-favorite="friend.isFavorite"
+      + ></friend-contact>
+
+      # 承接 (FriendContact.vue)
+      + props: ['name', 'phoneNumber', 'emailAddress', 'isFavorite']
+
+      # 应用
+      + <li><strong>Phone:</strong>{{ phoneNumber }}</li>
+      + <li><strong>Email:</strong>{{ emailAddress }}</li>
+      ```
+
+    - 传递 event 的规则
+
+      ```js
+      // 1. 父组件定义 method (App.vue)
+      methods: {
+          toggleFavorite(friendId) {
+            const identifiedFriend = this.friends.find(
+              (friend) => friend.id === friendId
+            );
+            identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
+          },
+      },
+
+      // 2. 在 template 中传递 (App.vue)
+
+      // <friend-contact v-for="friend in friends" v-on:toggle-favorite="toggleFavorite"></friend-contact>
+
+      // 3. 在 child 中承接 (FriendContact.vue) - 可暂不加，Vue3 特征
+      emits: ['toggle-favorite']
+      // 或者这样写:
+      emits: {
+          'toggle-favorite': function (id) {
+            if (id) {
+              return true;
+            } else {
+              console.warn('Id is missing.');
+              return false;
+            }
+          },
+      },
+
+      // 4. 在 child 中再定义
+      methods: {
+          toggleFavorite() {
+            this.$emit('toggle-favorite', this.id);
+          },
+      },
+
+      // 5. child 中应用
+      <button @click="toggleFavorite">Toggle Favorite</button>
+      ```
 
 ### <span id="1.0">`Brief Contents & codes position`</span>
 
@@ -189,7 +253,7 @@
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
-  1. 主要语法
+  1. 主要规则
 
   ```diff
   # 传递 (App.vue)
@@ -204,8 +268,7 @@
   + ></friend-contact>
 
   # 承接 (FriendContact.vue)
-  + props: ['name', 'phoneNumber', 'emailAddress', 'isFavorite'],
-
+  + props: ['name', 'phoneNumber', 'emailAddress', 'isFavorite']
 
   # 应用
   + <li><strong>Phone:</strong>{{ phoneNumber }}</li>
@@ -297,15 +360,15 @@
 
 1. 向 child component 传递固定参数，如
 
-    ```html
-    <friend-contact
-      name="Tom"
-      phone-number="123456"
-      email-address="1@1.com"
-      :isFavorite="true"
-    >
-    </friend-contact>
-    ```
+   ```html
+   <friend-contact
+     name="Tom"
+     phone-number="123456"
+     email-address="1@1.com"
+     :isFavorite="true"
+   >
+   </friend-contact>
+   ```
 
 - 这种情况是不需要加 ':' 的，除了最后一个因为 true 是 JS 规则里面的产物，所以要加 ':' 然后 '=' 右边才可以使用 JS code
 
@@ -313,25 +376,25 @@
 
 2. 这里提到传输参数也是用 v-bind，那么之前的 v-bind 跟现在这个 v-bind 有什么区别呢？
 
-    ```diff
-    - custome attribute
-    - 需要在 Child 中使用 props 去承接
-    + <friend-contact v-bind:name="friend.name"></friend-contact>
+   ```diff
+   - custome attribute
+   - 需要在 Child 中使用 props 去承接
+   + <friend-contact v-bind:name="friend.name"></friend-contact>
 
-    - regular attribute
-    + <a v-bind:href="vueLink">About Vue</a>
-    ```
+   - regular attribute
+   + <a v-bind:href="vueLink">About Vue</a>
+   ```
 
 3. 另外，传输 props 的命名规则是
 
-    ```diff
-    - parent => phone-number | child => phoneNumber
+   ```diff
+   - parent => phone-number | child => phoneNumber
 
-    + <friend-contact v-bind:phone-number="friend.phone-number"></friend-contact>
+   + <friend-contact v-bind:phone-number="friend.phone-number"></friend-contact>
 
-    + props: ['phoneNumber'],
-    + <li><strong>Phone:</strong>{{ phoneNumber }}</li>
-    ```
+   + props: ['phoneNumber'],
+   + <li><strong>Phone:</strong>{{ phoneNumber }}</li>
+   ```
 
 ---
 
@@ -415,6 +478,163 @@
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
+  1. 主要规则
+
+  ```js
+  // 1. 父组件定义 method (App.vue)
+  methods: {
+      toggleFavorite(friendId) {
+        const identifiedFriend = this.friends.find(
+          (friend) => friend.id === friendId
+        );
+        identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
+      },
+  },
+
+  // 2. 在 template 中传递 (App.vue)
+
+  // <friend-contact v-for="friend in friends" v-on:toggle-favorite="toggleFavorite"></friend-contact>
+
+  // 3. 在 child 中承接 (FriendContact.vue) - 可暂不加，Vue3 特征
+  emits: ['toggle-favorite']
+  // 或者这样写:
+  emits: {
+      'toggle-favorite': function (id) {
+        if (id) {
+          return true;
+        } else {
+          console.warn('Id is missing.');
+          return false;
+        }
+      },
+  },
+
+  // 4. 在 child 中再定义
+  methods: {
+      toggleFavorite() {
+        this.$emit('toggle-favorite', this.id);
+      },
+  },
+
+  // 5. child 中应用
+  <button @click="toggleFavorite">Toggle Favorite</button>
+  ```
+
+  2. src/App.vue
+
+  ```vue
+  <template>
+    <section>
+      <header>
+        <h1>My Friends</h1>
+      </header>
+      <ul>
+        <friend-contact
+          v-for="friend in friends"
+          :key="friend.id"
+          :id="friend.id"
+          :name="friend.name"
+          :phone-number="friend.phone"
+          :email-address="friend.email"
+          :is-favorite="friend.isFavorite"
+          v-on:toggle-favorite="toggleFavorite"
+        ></friend-contact>
+      </ul>
+    </section>
+  </template>
+
+  <script>
+  export default {
+    data() {
+      return {
+        friends: [
+          {
+            id: '001',
+            name: 'Manuel Lorenz',
+            phone: '0123 45678 90',
+            email: 'manuel@localhost.com',
+            isFavorite: true,
+          },
+          {
+            id: '002',
+            name: 'Julie Jones',
+            phone: '0987 654421 21',
+            email: 'julie@localhost.com',
+            isFavorite: false,
+          },
+        ],
+      };
+    },
+    methods: {
+      toggleFavorite(friendId) {
+        const identifiedFriend = this.friends.find(
+          (friend) => friend.id === friendId
+        );
+        identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
+      },
+    },
+  };
+  </script>
+  ```
+
+  3. src/components/FriendContact.vue
+
+  ```vue
+  <template>
+    <li>
+      <h2>{{ name }} {{ isFavorite ? '- (Favorite)' : '' }}</h2>
+      <button @click="toggleDetails(id)">
+        {{ detailsAreVisible ? 'Hide' : 'Show' }} Details
+      </button>
+      <button @click="toggleFavorite(id)">Toggle Favorite</button>
+      <ul v-if="detailsAreVisible">
+        <li><strong>Phone:</strong>{{ phoneNumber }}</li>
+        <li><strong>Email:</strong>{{ emailAddress }}</li>
+      </ul>
+    </li>
+  </template>
+
+  <script>
+  export default {
+    props: {
+      id: {
+        type: String,
+        required: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      phoneNumber: {
+        type: String,
+        required: true,
+      },
+      emailAddress: {
+        type: String,
+        required: true,
+      },
+      isFavorite: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
+    },
+    data() {
+      return {
+        detailsAreVisible: false,
+      };
+    },
+    methods: {
+      toggleDetails() {
+        this.detailsAreVisible = !this.detailsAreVisible;
+      },
+      toggleFavorite(friendId) {
+        this.$emit('toggle-favorite', friendId);
+      },
+    },
+  };
+  </script>
+  ```
 
 #### `Comment:`
 
