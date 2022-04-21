@@ -64,7 +64,7 @@
     </script>
     ```
 
-    - 传递 props 的规则
+  - 传递 props 的规则
 
       ```diff
       # 传递 (App.vue)
@@ -86,7 +86,7 @@
       + <li><strong>Email:</strong>{{ emailAddress }}</li>
       ```
 
-    - 传递 event 的规则
+  - 传递 event 的规则
 
       ```js
       // 1. 父组件定义 method (App.vue)
