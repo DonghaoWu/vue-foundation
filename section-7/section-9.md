@@ -14,7 +14,7 @@
 
 #### `本章背景：`
 
-- 本章主要是对之前的 section-7 和 section-8 的一个总结。
+- 本章主要是对之前的 section-8 中关于 emit custom event 的一个练习。
 
 - **要点**
 
