@@ -15,6 +15,7 @@
 #### `本章背景：`
 
 - 本章使用的是 section-7 里面的第三种组织方式
+- 本章为重点章，主要介绍传递 data 和 method。
 
 - **要点**
 
@@ -66,67 +67,67 @@
 
   - 传递 props 的规则
 
-      ```diff
-      # 传递 (App.vue)
-      + <friend-contact
-          v-for="friend in friends"
-          v-bind:key="friend.id"
-          :id="friend.id"
-          :name="friend.name"
-          :phone-number="friend.phone"
-          :email-address="friend.email"
-          :is-favorite="friend.isFavorite"
-      + ></friend-contact>
+    ```diff
+    # 传递 (App.vue)
+    + <friend-contact
+        v-for="friend in friends"
+        v-bind:key="friend.id"
+        :id="friend.id"
+        :name="friend.name"
+        :phone-number="friend.phone"
+        :email-address="friend.email"
+        :is-favorite="friend.isFavorite"
+    + ></friend-contact>
 
-      # 承接 (FriendContact.vue)
-      + props: ['name', 'phoneNumber', 'emailAddress', 'isFavorite']
+    # 承接 (FriendContact.vue)
+    + props: ['name', 'phoneNumber', 'emailAddress', 'isFavorite']
 
-      # 应用
-      + <li><strong>Phone:</strong>{{ phoneNumber }}</li>
-      + <li><strong>Email:</strong>{{ emailAddress }}</li>
-      ```
+    # 应用
+    + <li><strong>Phone:</strong>{{ phoneNumber }}</li>
+    + <li><strong>Email:</strong>{{ emailAddress }}</li>
+    ```
 
   - 传递 event 的规则
 
-      ```js
-      // 1. 父组件定义 method (App.vue)
-      methods: {
-          toggleFavorite(friendId) {
-            const identifiedFriend = this.friends.find(
-              (friend) => friend.id === friendId
-            );
-            identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
-          },
-      },
+    ```js
+    // 1. 父组件定义 method (App.vue)
+    methods: {
+        toggleFavorite(friendId) {
+          const identifiedFriend = this.friends.find(
+            (friend) => friend.id === friendId
+          );
+          identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
+        },
+    },
 
-      // 2. 在 template 中传递 (App.vue)
+    // 2. 在 template 中传递 (App.vue)
 
-      // <friend-contact v-for="friend in friends" v-on:toggle-favorite="toggleFavorite"></friend-contact>
+    // <friend-contact v-for="friend in friends" v-on:toggle-favorite="toggleFavorite"></friend-contact>
 
-      // 3. 在 child 中承接 (FriendContact.vue) - 可暂不加，Vue3 特征
-      emits: ['toggle-favorite']
-      // 或者这样写:
-      emits: {
-          'toggle-favorite': function (id) {
-            if (id) {
-              return true;
-            } else {
-              console.warn('Id is missing.');
-              return false;
-            }
-          },
-      },
+    // 3. 在 child 中承接 (FriendContact.vue) - 可暂不加，Vue3 特征
+    emits: ['toggle-favorite']
+    // 或者这样写:
+    emits: {
+        'toggle-favorite': function (id) {
+          if (id) {
+            return true;
+          } else {
+            console.warn('Id is missing.');
+            return false;
+          }
+        },
+    },
 
-      // 4. 在 child 中再定义
-      methods: {
-          toggleFavorite() {
-            this.$emit('toggle-favorite', this.id);
-          },
-      },
+    // 4. 在 child 中再定义
+    methods: {
+        toggleFavorite() {
+          this.$emit('toggle-favorite', this.id);
+        },
+    },
 
-      // 5. child 中应用
-      <button @click="toggleFavorite">Toggle Favorite</button>
-      ```
+    // 5. child 中应用
+    <button @click="toggleFavorite">Toggle Favorite</button>
+    ```
 
 ### <span id="1.0">`Brief Contents & codes position`</span>
 
@@ -177,7 +178,7 @@
 
 3. src/App.vue
 
-   ```vue
+   ```html
    <template>
      <section>
        <header>
@@ -190,34 +191,34 @@
    </template>
 
    <script>
-   export default {
-     data() {
-       return {
-         friends: [
-           {
-             id: 'manuel',
-             name: 'Manuel Lorenz',
-             phone: '0123 45678 90',
-             email: 'manuel@localhost.com',
-             isFavorite: true,
-           },
-           {
-             id: 'julie',
-             name: 'Julie Jones',
-             phone: '0987 654421 21',
-             email: 'julie@localhost.com',
-             isFavorite: false,
-           },
-         ],
-       };
-     },
-   };
+     export default {
+       data() {
+         return {
+           friends: [
+             {
+               id: 'manuel',
+               name: 'Manuel Lorenz',
+               phone: '0123 45678 90',
+               email: 'manuel@localhost.com',
+               isFavorite: true,
+             },
+             {
+               id: 'julie',
+               name: 'Julie Jones',
+               phone: '0987 654421 21',
+               email: 'julie@localhost.com',
+               isFavorite: false,
+             },
+           ],
+         };
+       },
+     };
    </script>
    ```
 
 4. src/components/FriendContact.vue
 
-   ```vue
+   ```html
    <template>
      <li>
        <h2>{{ name }}</h2>
@@ -232,18 +233,18 @@
    </template>
 
    <script>
-   export default {
-     data() {
-       return {
-         detailsAreVisible: false,
-       };
-     },
-     methods: {
-       toggleDetails() {
-         this.detailsAreVisible = !this.detailsAreVisible;
+     export default {
+       data() {
+         return {
+           detailsAreVisible: false,
+         };
        },
-     },
-   };
+       methods: {
+         toggleDetails() {
+           this.detailsAreVisible = !this.detailsAreVisible;
+         },
+       },
+     };
    </script>
    ```
 
@@ -277,7 +278,7 @@
 
   2. src/App.vue
 
-  ```vue
+  ```html
   <template>
     <section>
       <header>
@@ -298,34 +299,34 @@
   </template>
 
   <script>
-  export default {
-    data() {
-      return {
-        friends: [
-          {
-            id: 'manuel',
-            name: 'Manuel Lorenz',
-            phone: '0123 45678 90',
-            email: 'manuel@localhost.com',
-            isFavorite: true,
-          },
-          {
-            id: 'julie',
-            name: 'Julie Jones',
-            phone: '0987 654421 21',
-            email: 'julie@localhost.com',
-            isFavorite: false,
-          },
-        ],
-      };
-    },
-  };
+    export default {
+      data() {
+        return {
+          friends: [
+            {
+              id: 'manuel',
+              name: 'Manuel Lorenz',
+              phone: '0123 45678 90',
+              email: 'manuel@localhost.com',
+              isFavorite: true,
+            },
+            {
+              id: 'julie',
+              name: 'Julie Jones',
+              phone: '0987 654421 21',
+              email: 'julie@localhost.com',
+              isFavorite: false,
+            },
+          ],
+        };
+      },
+    };
   </script>
   ```
 
 3. src/components/FriendContact.vue
 
-   ```vue
+   ```html
    <template>
      <li>
        <h2>{{ name }} {{ isFavorite ? '- (Favorite)' : '' }}</h2>
@@ -340,19 +341,19 @@
    </template>
 
    <script>
-   export default {
-     props: ['name', 'phoneNumber', 'emailAddress', 'isFavorite'],
-     data() {
-       return {
-         detailsAreVisible: false,
-       };
-     },
-     methods: {
-       toggleDetails() {
-         this.detailsAreVisible = !this.detailsAreVisible;
+     export default {
+       props: ['name', 'phoneNumber', 'emailAddress', 'isFavorite'],
+       data() {
+         return {
+           detailsAreVisible: false,
+         };
        },
-     },
-   };
+       methods: {
+         toggleDetails() {
+           this.detailsAreVisible = !this.detailsAreVisible;
+         },
+       },
+     };
    </script>
    ```
 
@@ -404,7 +405,7 @@
 
   1. src/components/FriendContact.vue
 
-  ```vue
+  ```html
   <template>
     <li>
       <h2>{{ name }} {{ isFavorite ? '- (Favorite)' : '' }}</h2>
@@ -432,41 +433,41 @@
   </template>
 
   <script>
-  export default {
-    // props: ['name', 'phoneNumber', 'emailAddress', 'isFavorite'],
-    props: {
-      name: {
-        type: String,
-        required: true,
-      },
-      phoneNumber: {
-        type: String,
-        required: true,
-      },
-      emailAddress: {
-        type: String,
-        required: true,
-      },
-      isFavorite: {
-        type: Boolean,
-        required: true,
-        default: false,
-        validator: function (value) {
-          return value === true || value === false;
+    export default {
+      // props: ['name', 'phoneNumber', 'emailAddress', 'isFavorite'],
+      props: {
+        name: {
+          type: String,
+          required: true,
+        },
+        phoneNumber: {
+          type: String,
+          required: true,
+        },
+        emailAddress: {
+          type: String,
+          required: true,
+        },
+        isFavorite: {
+          type: Boolean,
+          required: true,
+          default: false,
+          validator: function (value) {
+            return value === true || value === false;
+          },
         },
       },
-    },
-    data() {
-      return {
-        detailsAreVisible: false,
-      };
-    },
-    methods: {
-      toggleDetails() {
-        this.detailsAreVisible = !this.detailsAreVisible;
+      data() {
+        return {
+          detailsAreVisible: false,
+        };
       },
-    },
-  };
+      methods: {
+        toggleDetails() {
+          this.detailsAreVisible = !this.detailsAreVisible;
+        },
+      },
+    };
   </script>
   ```
 
@@ -522,7 +523,7 @@
 
   2. src/App.vue
 
-  ```vue
+  ```html
   <template>
     <section>
       <header>
@@ -544,42 +545,42 @@
   </template>
 
   <script>
-  export default {
-    data() {
-      return {
-        friends: [
-          {
-            id: '001',
-            name: 'Manuel Lorenz',
-            phone: '0123 45678 90',
-            email: 'manuel@localhost.com',
-            isFavorite: true,
-          },
-          {
-            id: '002',
-            name: 'Julie Jones',
-            phone: '0987 654421 21',
-            email: 'julie@localhost.com',
-            isFavorite: false,
-          },
-        ],
-      };
-    },
-    methods: {
-      toggleFavorite(friendId) {
-        const identifiedFriend = this.friends.find(
-          (friend) => friend.id === friendId
-        );
-        identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
+    export default {
+      data() {
+        return {
+          friends: [
+            {
+              id: '001',
+              name: 'Manuel Lorenz',
+              phone: '0123 45678 90',
+              email: 'manuel@localhost.com',
+              isFavorite: true,
+            },
+            {
+              id: '002',
+              name: 'Julie Jones',
+              phone: '0987 654421 21',
+              email: 'julie@localhost.com',
+              isFavorite: false,
+            },
+          ],
+        };
       },
-    },
-  };
+      methods: {
+        toggleFavorite(friendId) {
+          const identifiedFriend = this.friends.find(
+            (friend) => friend.id === friendId
+          );
+          identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
+        },
+      },
+    };
   </script>
   ```
 
   3. src/components/FriendContact.vue
 
-  ```vue
+  ```html
   <template>
     <li>
       <h2>{{ name }} {{ isFavorite ? '- (Favorite)' : '' }}</h2>
@@ -595,44 +596,44 @@
   </template>
 
   <script>
-  export default {
-    props: {
-      id: {
-        type: String,
-        required: true,
+    export default {
+      props: {
+        id: {
+          type: String,
+          required: true,
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+        phoneNumber: {
+          type: String,
+          required: true,
+        },
+        emailAddress: {
+          type: String,
+          required: true,
+        },
+        isFavorite: {
+          type: Boolean,
+          required: true,
+          default: false,
+        },
       },
-      name: {
-        type: String,
-        required: true,
+      data() {
+        return {
+          detailsAreVisible: false,
+        };
       },
-      phoneNumber: {
-        type: String,
-        required: true,
+      methods: {
+        toggleDetails() {
+          this.detailsAreVisible = !this.detailsAreVisible;
+        },
+        toggleFavorite(friendId) {
+          this.$emit('toggle-favorite', friendId);
+        },
       },
-      emailAddress: {
-        type: String,
-        required: true,
-      },
-      isFavorite: {
-        type: Boolean,
-        required: true,
-        default: false,
-      },
-    },
-    data() {
-      return {
-        detailsAreVisible: false,
-      };
-    },
-    methods: {
-      toggleDetails() {
-        this.detailsAreVisible = !this.detailsAreVisible;
-      },
-      toggleFavorite(friendId) {
-        this.$emit('toggle-favorite', friendId);
-      },
-    },
-  };
+    };
   </script>
   ```
 

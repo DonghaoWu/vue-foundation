@@ -195,7 +195,7 @@ $ npm run serve
 
   3. src/App.vue
 
-  ```vue
+  ```html
   <template>
     <section>
       <header><h1>My friends</h1></header>
@@ -210,23 +210,23 @@ $ npm run serve
   </template>
 
   <script>
-  export default {
-    data() {
-      return {
-        friends: [
-          { id: '001', name: 'Tom', phone: '12345', email: '123@123.com' },
-          { id: '002', name: 'Mary', phone: '222', email: '222@222.com' },
-          { id: '003', name: 'Joe', phone: '333', email: '333@333.com' },
-        ],
-      };
-    },
-  };
+    export default {
+      data() {
+        return {
+          friends: [
+            { id: '001', name: 'Tom', phone: '12345', email: '123@123.com' },
+            { id: '002', name: 'Mary', phone: '222', email: '222@222.com' },
+            { id: '003', name: 'Joe', phone: '333', email: '333@333.com' },
+          ],
+        };
+      },
+    };
   </script>
   ```
 
   4. src/components/FriendContact.vue
 
-  ```vue
+  ```html
   <template>
     <li>
       <h2>{{ friend.name }}</h2>
@@ -241,19 +241,19 @@ $ npm run serve
   </template>
 
   <script>
-  export default {
-    props: ['friend'],
-    data() {
-      return {
-        detailsAreVisible: false,
-      };
-    },
-    methods: {
-      toggleDetails() {
-        this.detailsAreVisible = !this.detailsAreVisible;
+    export default {
+      props: ['friend'],
+      data() {
+        return {
+          detailsAreVisible: false,
+        };
       },
-    },
-  };
+      methods: {
+        toggleDetails() {
+          this.detailsAreVisible = !this.detailsAreVisible;
+        },
+      },
+    };
   </script>
   ```
 
@@ -320,7 +320,7 @@ $ npm run serve
 
   3. src/App.vue
 
-  ```vue
+  ```html
   <template>
     <section>
       <header><h1>My friends</h1></header>
@@ -335,23 +335,23 @@ $ npm run serve
   </template>
 
   <script>
-  export default {
-    data() {
-      return {
-        friends: [
-          { id: '001', name: 'Tom', phone: '12345', email: '123@123.com' },
-          { id: '002', name: 'Mary', phone: '222', email: '222@222.com' },
-          { id: '003', name: 'Joe', phone: '333', email: '333@333.com' },
-        ],
-      };
-    },
-  };
+    export default {
+      data() {
+        return {
+          friends: [
+            { id: '001', name: 'Tom', phone: '12345', email: '123@123.com' },
+            { id: '002', name: 'Mary', phone: '222', email: '222@222.com' },
+            { id: '003', name: 'Joe', phone: '333', email: '333@333.com' },
+          ],
+        };
+      },
+    };
   </script>
   ```
 
   4. src/components/FriendContact.vue
 
-  ```vue
+  ```html
   <template>
     <li>
       <h2>{{ friend.name }}</h2>
@@ -364,19 +364,19 @@ $ npm run serve
   </template>
 
   <script>
-  export default {
-    props: ['friend'],
-    data() {
-      return {
-        detailsAreVisible: false,
-      };
-    },
-    methods: {
-      toggleDetails() {
-        this.detailsAreVisible = !this.detailsAreVisible;
+    export default {
+      props: ['friend'],
+      data() {
+        return {
+          detailsAreVisible: false,
+        };
       },
-    },
-  };
+      methods: {
+        toggleDetails() {
+          this.detailsAreVisible = !this.detailsAreVisible;
+        },
+      },
+    };
   </script>
   ```
 

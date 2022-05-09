@@ -1,4 +1,4 @@
-# Vue development tools (Part 9)
+# Vue development tools (Part 10)
 
 ### `Key Word: component communication practice.`
 
@@ -6,7 +6,7 @@
 
 ## `Section: Front-end`(Vue Basics)
 
-### `Summary`: In this documentation, we practice component communication.
+### `Summary`: In this documentation, we practice some advanced vue component features.
 
 ### `Check Dependencies & Tools:`
 
@@ -14,48 +14,40 @@
 
 #### `本章背景：`
 
-- 本章主要是对之前的 section-8 中关于 emit custom event 的一个练习。
+- 本章主要介绍一些常用的高阶 vue component 的用法。
 
 - **要点**
 
-  - 传递 custom event / method 的重要 5 步。
-
-    ```diff
-    - Parent
-    + methods: {
-        deleteContact(friendId) {
-          this.friends = this.friends.filter((friend) => friend.id !== friendId);
-        },
-    + },
-
-    + <friend-contact @delete-contact="deleteContact"></friend-contact>
-
-
-    - Child
-    + emits: ['delete-contact'],
-
-    + methods: {
-        deleteContact() {
-          this.$emit('delete-contact', this.id);
-        },
-    + },
-
-    + <button v-on:click="deleteContact">Delete</button>
-    ```
+  ```diff
+  + Local component registration
+  + scoped styling
+  + slot
+  + mutiple slots
+  + slot fall back
+  + slot improvement
+  + slot shorthand
+  + scoped slots
+  + slot props
+  + dynammic component
+  + keep dynamic component alive
+  + customize error slot
+  + teloproting
+  + Fragements
+  ```
 
 ### <span id="1.0">`Brief Contents & codes position`</span>
 
 - #### Click here: [BACK TO NAVIGASTION](https://github.com/DonghaoWu/WebDev-tools-demo/blob/master/README.md)
 
-- [1.1 Add a new component.](#1.1)
-- [1.2 Add two ways data binding.](#1.2)
+- [1.1 Local component registration & scoped styling.](#1.1)
+- [1.2 slot basic.](#1.2)
 - [1.3 Validating Props.](#1.3)
 - [1.4 Emitting Custom Events.](#1.4)
 - [1.5 Add delete functionalities.](#1.5)
 
 ---
 
-### <span id="1.1">`Step1: Add a new component.`</span>
+### <span id="1.1">`Step1: Local component registration & scoped styling.`</span>
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
@@ -65,30 +57,23 @@
 
     ```html
     <template>
-      <form>
-        <div>
-          <label>Name</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label>Phone</label>
-          <input type="tel" />
-        </div>
-        <div>
-          <label>Email</label>
-          <input type="email" />
-        </div>
-        <div>
-          <button>Add Contact</button>
-        </div>
-      </form>
+      <div>
+        <the-header></the-header>
+      </div>
     </template>
 
     <script>
-      export default {};
-    </script>
+    import TheHeader from './components/TheHeader.vue';
+    import BadgeList from './components/BadgeList.vue';
+    import UserInfo from './components/UserInfo.vue';
+    import CourseGoalsSlot from './components/CourseGoalsSlot.vue';
 
-    <style></style>
+    export default {
+      components: {
+        TheHeader,
+        BadgeList,
+        UserInfo,
+      },
     ```
 
   2. 注册
