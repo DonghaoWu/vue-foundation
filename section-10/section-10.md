@@ -51,9 +51,9 @@
 - [1.3 Multiple slots.](#1.3)
 - [1.4 One way to improve slot performance & shorthand.](#1.4)
 - [1.5 Scoped slot.](#1.5)
-- [1.6 Dynamic component.](#1.6)
-- [1.7 Customize error slot.](#1.7)
-- [1.8 Teleproting.](#1.8)
+- [1.6 Customize error slot.](#1.6)
+- [1.7 Teleporting.](#1.7)
+- [1.8 Dynamic component.](#1.8)
 
 ---
 
@@ -483,7 +483,27 @@
 
 3. `对于这一小节的要求是掌握从 slot 传递变量到 component。`
 
-### <span id="1.6">`Step5: Dynamic component.`</span>
+### <span id="1.6">`Step6: Customize error slot.`</span>
+
+- #### Click here: [BACK TO CONTENT](#1.0)
+
+  1. 关键代码
+
+#### `Comment:`
+
+1.
+
+### <span id="1.7">`Step7: Teleporting.`</span>
+
+- #### Click here: [BACK TO CONTENT](#1.0)
+
+  1. 关键代码
+
+#### `Comment:`
+
+1.
+
+### <span id="1.8">`Step8: Dynamic component.`</span>
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
