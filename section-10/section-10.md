@@ -35,15 +35,25 @@
   + Fragements
   ```
 
+- **难点**
+
+  ```diff
+  + 定位 slot 对应位置
+  + css 代码重用
+  ```
+
 ### <span id="1.0">`Brief Contents & codes position`</span>
 
 - #### Click here: [BACK TO NAVIGASTION](https://github.com/DonghaoWu/WebDev-tools-demo/blob/master/README.md)
 
 - [1.1 Local component registration & scoped styling.](#1.1)
-- [1.2 slot basic.](#1.2)
-- [1.3 Validating Props.](#1.3)
-- [1.4 Emitting Custom Events.](#1.4)
-- [1.5 Add delete functionalities.](#1.5)
+- [1.2 Single slot.](#1.2)
+- [1.3 Multiple slots.](#1.3)
+- [1.4 One way to improve slot performance & shorthand.](#1.4)
+- [1.5 Scoped slot.](#1.5)
+- [1.6 Dynamic component.](#1.6)
+- [1.7 Customize error slot.](#1.7)
+- [1.8 Teleproting.](#1.8)
 
 ---
 
@@ -51,7 +61,33 @@
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
-  1. 创建
+  1. 关键语句
+
+  ```diff
+  - Local component registration
+  + <script>
+  +   import TheHeader from './components/TheHeader.vue';
+
+  + export default {
+  +     components: {
+  +       TheHeader,
+  +     }
+  + }
+  + </script>
+
+  - scoped styling
+  +  <style scoped>
+  + html {
+  +   font-family: sans-serif;
+  + }
+
+  + body {
+  +   margin: 0;
+  + }
+  + </style>
+  ```
+
+  2. 例子
 
   - src/components/NewFriend.vue
 
@@ -59,347 +95,359 @@
     <template>
       <div>
         <the-header></the-header>
+        <badge-list></badge-list>
+        <user-info
+          :full-name="fullName"
+          :role="role"
+          :info-text="infoText"
+        ></user-info>
       </div>
     </template>
 
     <script>
-    import TheHeader from './components/TheHeader.vue';
-    import BadgeList from './components/BadgeList.vue';
-    import UserInfo from './components/UserInfo.vue';
-    import CourseGoalsSlot from './components/CourseGoalsSlot.vue';
+      import TheHeader from './components/TheHeader.vue';
+      import BadgeList from './components/BadgeList.vue';
+      import UserInfo from './components/UserInfo.vue';
 
-    export default {
-      components: {
-        TheHeader,
-        BadgeList,
-        UserInfo,
-      },
-    ```
-
-  2. 注册
-
-  - src/main.js
-
-    ```js
-    import NewFriend from './components/NewFriend.vue';
-
-    app.component('new-friend', NewFriend);
-    ```
-
-  3. 应用
-
-  - src/App.vue
-
-    ```html
-    <template>
-      <section>
-        <header>
-          <h1>My Friends</h1>
-        </header>
-        <new-friend></new-friend>
-        <ul>
-          <friend-contact></friend-contact>
-        </ul>
-      </section>
-    </template>
-    ```
-
----
-
-### <span id="1.2">`Step2: Add two ways data binding.`</span>
-
-- #### Click here: [BACK TO CONTENT](#1.0)
-
-  1. set up data and input binding
-
-  - src/components/NewFriend.vue
-
-  ```html
-  <template>
-    <form>
-      <div>
-        <label>Name</label>
-        <input type="text" v-model="enteredName" />
-      </div>
-      <div>
-        <label>Phone</label>
-        <input type="tel" v-model="enteredPhone" />
-      </div>
-      <div>
-        <label>Email</label>
-        <input type="email" v-model="enteredEmail" />
-      </div>
-      <div>
-        <button>Add Contact</button>
-      </div>
-    </form>
-  </template>
-
-  <script>
-    export default {
-      data() {
-        return {
-          enteredName: '',
-          enteredPhone: '',
-          enteredEmail: '',
-        };
-      },
-    };
-  </script>
-  ```
-
-#### `Comment:`
-
-1.
-
----
-
-### <span id="1.3">`Step3: Create custom event and pass it down to child component.`</span>
-
-- #### Click here: [BACK TO CONTENT](#1.0)
-
-  1. 父组件创建 method 并向下传递.
-
-  - src/components/App.vue
-
-  ```html
-  <template>
-    <new-friend @add-contact="addContact"></new-friend>
-  </template>
-
-  <script>
-    export default {
-      methods: {
-        addContact({ inputName, inputPhoneNumber, inputEmail }) {
-          const newFriendContact = {
-            id: new Date().toISOString(),
-            name: inputName,
-            phone: inputPhoneNumber,
-            email: inputEmail,
-            isFavorite: false,
+      export default {
+        components: {
+          TheHeader,
+          BadgeList,
+          UserInfo,
+        },
+        data() {
+          return {
+            fullName: 'Danny',
+            role: 'Front dev',
+            infoText: 'top dev',
           };
-          this.friends.push(newFriendContact);
         },
-      },
-    };
-  </script>
-  ```
+      };
+    </script>
+
+    <style scoped>
+      html {
+        font-family: sans-serif;
+      }
+
+      body {
+        margin: 0;
+      }
+    </style>
+    ```
 
 #### `Comment:`
 
 1.
 
-### <span id="1.4">`Step4: Get the method and apply in Child component.`</span>
+---
+
+### <span id="1.2">`Step2: Single slot.`</span>
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
-  1. Emit the custom event in Child component.
+  1. 关键代码
+
+  - main.js
+
+  ```js
+  import BaseCardSlot from './components/BaseCardSlot.vue';
+  app.component('base-card-slot', BaseCardSlot);
+  ```
+
+  - BaseCardSlot.vue
 
   ```html
   <template>
-    <form @submit.prevent="handleSubmit">
-      <div>
-        <label>Name</label>
-        <input type="text" v-model="enteredName" />
-      </div>
-      <div>
-        <label>Phone</label>
-        <input type="tel" v-model="enteredPhone" />
-      </div>
-      <div>
-        <label>Email</label>
-        <input type="email" v-model="enteredEmail" />
-      </div>
-      <div>
-        <button>Add Contact</button>
-      </div>
-    </form>
+    <div>
+      <slot></slot>
+    </div>
   </template>
 
   <script>
-    export default {
-      emits: ['add-contact'],
-      data() {
-        return {
-          enteredName: '',
-          enteredPhone: '',
-          enteredEmail: '',
-        };
-      },
-      methods: {
-        handleSubmit() {
-          this.$emit('add-contact', {
-            inputName: this.enteredName,
-            inputPhoneNumber: this.enteredPhone,
-            inputEmail: this.enteredEmail,
-          });
-        },
-      },
-    };
+    export default {};
   </script>
   ```
 
-#### `Comment:`
-
-1. 重点语句
-
-   ```diff
-   + emits: ['add-contact'],
-
-   + methods: {
-       handleSubmit() {
-         this.$emit('add-contact', {
-           inputName: this.enteredName,
-           inputPhoneNumber: this.enteredPhone,
-           inputEmail: this.enteredEmail,
-         });
-       },
-   + },
-
-   + <form @submit.prevent="handleSumbit">
-   ```
-
-### <span id="1.5">`Step5: Add delete functionalities.`</span>
-
-- #### Click here: [BACK TO CONTENT](#1.0)
-
-  1. ##### Parent
-
-  - src/App.vue
+  - UserInfo.vue
 
   ```html
   <template>
     <section>
-      <header>
-        <h1>My Friends</h1>
-      </header>
-      <new-friend @add-contact="addContact"></new-friend>
-      <ul>
-        <friend-contact
-          v-for="friend in friends"
-          :key="friend.id"
-          :id="friend.id"
-          :name="friend.name"
-          :phone-number="friend.phone"
-          :email-address="friend.email"
-          :is-favorite="friend.isFavorite"
-          v-on:toggle-favorite="toggleFavorite"
-          @delete-contact="deleteContact"
-        ></friend-contact>
-      </ul>
+      <base-card-slot>
+        <header>
+          <h3>{{ fullName }}</h3>
+          <base-badge :type="role" :caption="role.toUpperCase()"></base-badge>
+        </header>
+        <p>{{ infoText }}</p>
+      </base-card-slot>
     </section>
+  </template>
+  ```
+
+#### `Comment:`
+
+1. 单一 slot 的对应关系
+
+```diff
+- <template v-slot:default>
++   <header>
++     <h3>{{ fullName }}</h3>
++     <base-badge :type="role" :caption="role.toUpperCase()"></base-badge>
++   </header>
++   <p>{{ infoText }}</p>
+- </template>
+
+- <slot> </slot>
+```
+
+---
+
+### <span id="1.3">`Step3: Multiple slots.`</span>
+
+- #### Click here: [BACK TO CONTENT](#1.0)
+
+  1. 关键代码
+
+  ```diff
+  + <slot name="header"></slot>
+  + <template v-slot:header></template>
+  ```
+
+  - main.js
+
+  ```js
+  import BaseCardSlot from './components/BaseCardSlot.vue';
+  app.component('base-card-slot', BaseCardSlot);
+  ```
+
+  - BaseCardSlot.vue
+
+  ```html
+  <template>
+    <div>
+      <header>
+        <slot name="header">
+          <h2>The default h2 fallback</h2>
+        </slot>
+      </header>
+      <slot></slot>
+    </div>
+  </template>
+
+  <script>
+    export default {};
+  </script>
+
+  <style scoped>
+    div {
+      margin: 2rem auto;
+      max-width: 30rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+      padding: 1rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+  ```
+
+  - UserInfo.vue
+
+  ```html
+  <template>
+    <section>
+      <base-card-slot>
+        <template v-slot:header>
+          <h3>{{ fullName }}</h3>
+          <base-badge :type="role" :caption="role.toUpperCase()"></base-badge>
+        </template>
+        <template v-slot:default>
+          <p>{{ infoText }}</p>
+        </template>
+      </base-card-slot>
+    </section>
+  </template>
+  ```
+
+#### `Comment:`
+
+1. 多个 slot 的对应关系
+
+- 第一个 slot
+
+```diff
+- <template v-slot:header>
++   <h3>{{ fullName }}</h3>
++  <base-badge :type="role" :caption="role.toUpperCase()"></base-badge>
+- </template>
+
+-  <slot name="header">
++     <h2>The default h2 fallback</h2>
+-  </slot>
+```
+
+- 第二个 slot
+
+```diff
+- <template v-slot:default>
++   <p>{{ infoText }}</p>
+- </template>
+
+- <slot> </slot>
+```
+
+2. 上面还有一个 default fallback 的概念，意思就是如果对应套用的实际 slot 里面如果没有对应的 h2 tag，就添加这个 h2 tag 的内容，主要适用于一些`读取中或者固定提示信息的场合`。
+
+```html
+<h2>The default h2 fallback</h2>
+```
+
+3. 目前看到的 slot 的作用是套用 style，比如说如果对应关系如下：
+
+```diff
+- <template v-slot:header>
+-   <h3>{{ fullName }}</h3>
+-  <base-badge :type="role" :caption="role.toUpperCase()"></base-badge>
+- </template>
+
++  <header>
+-    <slot name="header">
+-      <h2>The default h2 fallback</h2>
+-    </slot>
++  </header>
+
+- 相当于
++  <header>
++     <h3>{{ fullName }}</h3>
++     <base-badge :type="role" :caption="role.toUpperCase()"></base-badge>
++  </header>
+```
+
+- 这样就可以把 header 的 styling 套用在实际内容的 `<h3>` 和 `<base-badge>` 中。
+
+- 所以 slot 可以看作是 css 代码重用的一个 feature。
+- 通过命名模式可以快速定位相应的模块。
+
+### <span id="1.4">`Step4: One way to improve slot performance & shorthand.`</span>
+
+- #### Click here: [BACK TO CONTENT](#1.0)
+
+  1. 关键代码
+
+  ```html
+  <base-card-slot>
+    <template v-slot:header></template>
+    <template v-slot:default></template>
+  </base-card-slot>
+
+  <template>
+    <div>
+      <header v-if="$slots.header">
+        <slot name="header"></slot>
+      </header>
+      <div class="my-class" v-if="@slots.default">
+        <slot></slot>
+      </div>
+    </div>
+  </template>
+  ```
+
+  2. slot 简写
+
+  ```html
+  <base-card-slot>
+    <template #header></template>
+    <template #default></template>
+  </base-card-slot>
+  ```
+
+#### `Comment:`
+
+1. 如果在实际 vue 中 slot 没有内容，则可以通过 v-if 删去对应的 node 以提升 performance。
+
+### <span id="1.5">`Step5: Scoped slot.`</span>
+
+- #### Click here: [BACK TO CONTENT](#1.0)
+
+  1. 这里主要是关于如何从 slot 向 vue component 文件传输 data
+
+  2. 简单传递 1 个变量
+
+  ```html
+  <template>
+    <div>
+      <slot v-bind:slotGoal="goals[0]"></slot>
+    </div>
   </template>
 
   <script>
     export default {
       data() {
         return {
-          friends: [
-            {
-              id: '001',
-              name: 'Manuel Lorenz',
-              phone: '0123 45678 90',
-              email: 'manuel@localhost.com',
-              isFavorite: true,
-            },
-            {
-              id: '002',
-              name: 'Julie Jones',
-              phone: '0987 654421 21',
-              email: 'julie@localhost.com',
-              isFavorite: false,
-            },
-          ],
+          goals: ['Learn Vue', 'Finish the course'],
         };
-      },
-      methods: {
-        toggleFavorite(friendId) {
-          const identifiedFriend = this.friends.find(
-            (friend) => friend.id === friendId
-          );
-          identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
-        },
-        addContact({ inputName, inputPhoneNumber, inputEmail }) {
-          const newFriendContact = {
-            id: new Date().toISOString(),
-            name: inputName,
-            phone: inputPhoneNumber,
-            email: inputEmail,
-            isFavorite: false,
-          };
-          this.friends.push(newFriendContact);
-        },
-        deleteContact(friendId) {
-          this.friends = this.friends.filter(
-            (friend) => friend.id !== friendId
-          );
-        },
       },
     };
   </script>
   ```
 
-  2. ##### Child
+  ```html
+  <course-goals-slot>
+    <template v-slot:default="slotProps">
+      <h2>{{ slotProps.slotGoal }}</h2>
+    </template>
+  </course-goals-slot>
+  ```
 
-  - src/components/FriendContact.vue
+  3. 传递多个变量
+
+  - CourseGoalsSlot.vue
 
   ```html
   <template>
-    <li>
-      <h2>{{ name }} {{ isFavorite ? '- (Favorite)' : '' }}</h2>
-      <button @click="toggleDetails(id)">
-        {{ detailsAreVisible ? 'Hide' : 'Show' }} Details
-      </button>
-      <button @click="toggleFavorite">Toggle Favorite</button>
-      <ul v-if="detailsAreVisible">
-        <li><strong>Phone:</strong>{{ phoneNumber }}</li>
-        <li><strong>Email:</strong>{{ emailAddress }}</li>
-      </ul>
-      <button v-on:click="deleteContact">Delete</button>
-    </li>
+    <ul>
+      <li v-for="goal in goals" :key="goal">
+        <slot v-bind:slotGoal="goal" another="..."></slot>
+      </li>
+    </ul>
   </template>
 
   <script>
     export default {
-      emits: ['toggle-favorite', 'delete-contact'],
-      props: {
-        id: {
-          type: String,
-          required: true,
-        },
-        name: {
-          type: String,
-          required: true,
-        },
-        phoneNumber: {
-          type: String,
-          required: true,
-        },
-        emailAddress: {
-          type: String,
-          required: true,
-        },
-        isFavorite: {
-          type: Boolean,
-          required: true,
-          default: false,
-        },
-      },
       data() {
         return {
-          detailsAreVisible: false,
+          goals: ['Learn Vue', 'Finish the course'],
         };
       },
-      methods: {
-        toggleDetails() {
-          this.detailsAreVisible = !this.detailsAreVisible;
-        },
-        toggleFavorite() {
-          this.$emit('toggle-favorite', this.id);
-        },
-        deleteContact() {
-          this.$emit('delete-contact', this.id);
-        },
+    };
+  </script>
+  ```
+
+  - App.vue
+
+  ```html
+  <template>
+    <div>
+      <course-goals-slot>
+        <template v-slot:default="slotProps">
+          <h2>{{ slotProps.slotGoal }}</h2>
+          <h3>{{ slotProps['another'] }}</h3>
+        </template>
+      </course-goals-slot>
+    </div>
+  </template>
+
+  <script>
+    import CourseGoalsSlot from './components/CourseGoalsSlot.vue';
+
+    export default {
+      components: {
+        CourseGoalsSlot,
       },
     };
   </script>
@@ -407,30 +455,43 @@
 
 #### `Comment:`
 
-1. 重点语句
+1. 对应关系
 
-   ```diff
-   - Parent
-   + methods: {
-       deleteContact(friendId) {
-         this.friends = this.friends.filter((friend) => friend.id !== friendId);
-       },
-   + },
+```diff
+- <ul>
+-  <li v-for="goal in goals" :key="goal">
++     <slot v-bind:slotGoal="goal" another="..."></slot>
+-  </li>
+- </ul>
 
-   + <friend-contact @delete-contact="deleteContact"></friend-contact>
+- <template v-slot:default="slotProps">
++   <h2>{{ slotProps.slotGoal }}</h2>
++   <h3>{{ slotProps['another'] }}</h3>
+- </template>
+```
 
+2. 这个就比较复杂，还原之后应该是
 
-   - Child
-   + emits: ['delete-contact'],
+```html
+<ul>
+  <li v-for="goal in goals" :key="goal">
+    <h2>{{ goal }}</h2>
+    <h3>...</h3>
+  </li>
+</ul>
+```
 
-   + methods: {
-       deleteContact() {
-         this.$emit('delete-contact', this.id);
-       },
-   + },
+3. `对于这一小节的要求是掌握从 slot 传递变量到 component。`
 
-   + <button v-on:click="deleteContact">Delete</button>
-   ```
+### <span id="1.6">`Step5: Dynamic component.`</span>
+
+- #### Click here: [BACK TO CONTENT](#1.0)
+
+  1. 关键代码
+
+#### `Comment:`
+
+1.
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 - #### Click here: [BACK TO NAVIGASTION](https://github.com/DonghaoWu/WebDev-tools-demo/blob/master/README.md)

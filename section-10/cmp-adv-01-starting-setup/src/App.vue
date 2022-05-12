@@ -1,49 +1,45 @@
 <template>
   <div>
     <the-header></the-header>
-    <button @click="setSelectedComponent('active-goal')">Active goal</button>
-    <button @click="setSelectedComponent('manage-goal')">Manage goal</button>
-    <!-- <manage-goal v-if="selectedComponent === 'manage-goal'"></manage-goal>
-    <active-goal v-if="selectedComponent === 'active-goal'"></active-goal> -->
-    <keep-alive>
-      <component v-bind:is="selectedComponent"></component>
-    </keep-alive>
+    <badge-list></badge-list>
+    <user-info
+      :full-name="fullName"
+      :role="role"
+      :info-text="infoText"
+    ></user-info>
+    <course-goals-slot>
+      <template v-slot:default="slotProps">
+        <h2>{{ slotProps.slotGoal }}</h2>
+        <h3>{{ slotProps['another'] }}</h3>
+      </template>
+    </course-goals-slot>
   </div>
 </template>
 
 <script>
 import TheHeader from './components/TheHeader.vue';
-// import BadgeList from './components/BadgeList.vue';
-// import UserInfo from './components/UserInfo.vue';
-// import CourseGoalsSlot from './components/CourseGoalsSlot.vue';
-import ManageGoal from './components/ManageGoal.vue';
-import ActiveGoal from './components/ActiveGoal.vue';
+import BadgeList from './components/BadgeList.vue';
+import UserInfo from './components/UserInfo.vue';
+import CourseGoalsSlot from './components/CourseGoalsSlot.vue';
 
 export default {
   components: {
     TheHeader,
-    ManageGoal,
-    ActiveGoal,
+    BadgeList,
+    UserInfo,
+    CourseGoalsSlot,
   },
   data() {
     return {
-      selectedComponent: 'active-goal',
-      activeUser: {
-        name: 'Maximilian Schwarzmüller',
-        description: 'Site owner and admin',
-        role: 'admin',
-      },
+      fullName: 'Danny',
+      role: 'Front dev',
+      infoText: 'top dev',
     };
-  },
-  methods: {
-    setSelectedComponent(cmp) {
-      this.selectedComponent = cmp;
-    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 html {
   font-family: sans-serif;
 }
