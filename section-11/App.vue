@@ -1,20 +1,18 @@
 <template>
-  <ul>
-    <learning-resource
-      v-for="res in storedResources"
-      :key="res.id"
-      :title="res.title"
-      :description="res.description"
-      :link="res.link"
-    ></learning-resource>
-  </ul>
+  <div>
+    <the-header title="RememberMe"></the-header>
+    <stored-resource :resources='storedResources'></stored-resource>
+  </div>
 </template>
 
 <script>
-import LearningResource from './components/LearningResource';
+import StoredResource from './components/StoredResource';
+import TheHeader from './components/layout/TheHeader'
+
 export default {
   components: {
-    LearningResource,
+    StoredResource,
+    TheHeader
   },
   data() {
     return {
@@ -35,4 +33,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+/* paste css style here */
+</style>
+
+</style>
