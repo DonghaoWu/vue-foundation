@@ -51,9 +51,8 @@
 - [1.3 Multiple slots.](#1.3)
 - [1.4 One way to improve slot performance & shorthand.](#1.4)
 - [1.5 Scoped slot.](#1.5)
-- [1.6 Customize error slot.](#1.6)
-- [1.7 Teleporting.](#1.7)
-- [1.8 Dynamic component.](#1.8)
+- [1.6 Customize error slot. & Teleporting](#1.6)
+- [1.7 Dynamic component.](#1.7)
 
 ---
 
@@ -483,31 +482,152 @@
 
 3. `对于这一小节的要求是掌握从 slot 传递变量到 component。`
 
-### <span id="1.6">`Step6: Customize error slot.`</span>
+### <span id="1.6">`Step6: Customize error dialog slot. & Teleporting.`</span>
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
   1. 关键代码
+
+  2. 建立一个 dialog slot
+
+  - MyErrorAlert.vue
+
+  ```html
+  <template>
+    <dialog open>
+      <slot></slot>
+    </dialog>
+  </template>
+
+  <script>
+    export default {};
+  </script>
+
+  <style scoped>
+    dialog {
+      margin: 0;
+      position: fixed;
+      top: 20vh;
+      left: 30%;
+      width: 40%;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    }
+  </style>
+  ```
+
+  3. 套用 slot
+
+  - ManageGoal.vue
+
+  ```html
+  <template>
+    <div>
+      <h2>Manage Goal</h2>
+      <input type="text" ref="goal" />
+      <button @click="setGoal">Set Goal</button>
+      <my-error-alert v-if="inputIsInvalid">
+        <h2>Input is invalid.</h2>
+        <p>Please input something.</p>
+        <button @click="confirmError">Got it</button>
+      </my-error-alert>
+    </div>
+  </template>
+
+  <script>
+    import MyErrorAlert from './MyErrorAlert.vue';
+    export default {
+      components: {
+        MyErrorAlert,
+      },
+      data() {
+        return {
+          inputIsInvalid: false,
+        };
+      },
+      methods: {
+        setGoal() {
+          const enteredValue = this.$refs.goal.value;
+          if (enteredValue === '') {
+            this.inputIsInvalid = true;
+          }
+        },
+        confirmError() {
+          this.inputIsInvalid = false;
+        },
+      },
+    };
+  </script>
+  ```
+
+  4. 使用 Teleporting 使 component 的层级上升到 app 层
+
+  ```html
+  <teleport to="#app">
+    <my-error-alert v-if="inputIsInvalid">
+      <h2>Input is invalid.</h2>
+      <p>Please input something.</p>
+      <button @click="confirmError">Got it</button>
+    </my-error-alert>
+  </teleport>
+  ```
 
 #### `Comment:`
 
 1.
 
-### <span id="1.7">`Step7: Teleporting.`</span>
+### <span id="1.7">`Step7: Dynamic component & alive.`</span>
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 
   1. 关键代码
 
-#### `Comment:`
+  ```html
+  <div>
+    <button @click="setSelectedComponent('active-goal')">Active goal</button>
+    <button @click="setSelectedComponent('manage-goal')">Manage goal</button>
+    <manage-goal v-if="selectedComponent === 'manage-goal'"></manage-goal>
+    <active-goal v-if="selectedComponent === 'active-goal'"></active-goal>
+  </div>
+  ```
 
-1.
+  2. 改成
 
-### <span id="1.8">`Step8: Dynamic component.`</span>
+  ```html
+  <div>
+    <the-header></the-header>
+    <button @click="setSelectedComponent('active-goal')">Active goal</button>
+    <button @click="setSelectedComponent('manage-goal')">Manage goal</button>
+    <component v-bind:is="selectedComponentName"></component>
+  </div>
 
-- #### Click here: [BACK TO CONTENT](#1.0)
+  <script>
+    export default {
+      components: {
+        ManageGoal,
+        ActiveGoal,
+      },
+      data() {
+        return {
+          selectedComponentName: 'active-goal',
+        };
+      },
+      methods: {
+        setSelectedComponent(componentName) {
+          this.selectedComponentName = componentName;
+        },
+      },
+    };
+  </script>
+  ```
 
-  1. 关键代码
+  3. 保持 alive 的状态
+
+  ```html
+  <keep-alive>
+    <component v-bind:is="selectedComponent"></component>
+  </keep-alive>
+  ```
 
 #### `Comment:`
 
@@ -515,3 +635,4 @@
 
 - #### Click here: [BACK TO CONTENT](#1.0)
 - #### Click here: [BACK TO NAVIGASTION](https://github.com/DonghaoWu/WebDev-tools-demo/blob/master/README.md)
+```
