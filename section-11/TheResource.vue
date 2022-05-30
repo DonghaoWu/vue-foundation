@@ -49,6 +49,7 @@ export default {
     return {
       resources: this.storedResources,
       addResource: this.addResource,
+      removeResource: this.removeResource,
     };
   },
   methods: {
@@ -62,6 +63,15 @@ export default {
         description,
         link,
       });
+    },
+    removeResource(resId) {
+      // this.storedResources = this.storedResources.filter(
+      //   (res) => res.id !== resId
+      // );
+      const resIndex = this.storedResources.findIndex(
+        (res) => res.id === resId
+      );
+      this.storedResources.splice(resIndex, 1);
     },
   },
   computed: {
