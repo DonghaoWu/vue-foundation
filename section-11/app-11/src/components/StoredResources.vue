@@ -1,26 +1,32 @@
 <template>
   <ul>
-    <learning-resource
+    <learning-resources
       v-for="res in resources"
       :key="res.id"
       :title="res.title"
       :description="res.description"
       :link="res.link"
       :id="res.id"
-    ></learning-resource>
+    ></learning-resources>
   </ul>
 </template>
 
 <script>
-import LearningResource from './LearningResource';
+import LearningResources from './LearningResources';
 export default {
   inject: ['resources'],
   components: {
-    LearningResource,
+    LearningResources,
   },
 };
 </script>
 
 <style scoped>
-/* paste your styles here */
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin: auto;
+  max-width: 40rem;
+}
 </style>

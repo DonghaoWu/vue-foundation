@@ -1,12 +1,12 @@
 1. npm install
 
-2. 
+2.
 
 ```diff
 + App.vue => <ul></ul>
 + App.uve => data => add storedResoutces with 4 attributes
 
-+ components => learning-resources => LearningResource.vue => 
++ components => learning-resources => LearningResource.vue =>
 + import LearningResource.vue in App.vue
 + App.uve => => <ul><learning-resource v-for><><ul>
 + pass all data from App.vue to LearningResource.vue
@@ -42,7 +42,7 @@
 + add selectedTab: 'store-resources' in TheResources data
 + add setSelectedTab in TheResources method
 + add <component> in TheResources template
-+ import TheResources in App.vue 
++ import TheResources in App.vue
 - TheResources component should be in layouts folder
 + import StoredResource.vue in TheResources
 + import AddResource.vue in TheResources
@@ -70,7 +70,7 @@
 + UI => BaseDialog.vue => dialog => open
 + BaseDialog.vue => dialog => slot
 + BaseDialog.vue => dialog => header => slot => title => default
-+ BaseDialog.vue => dialog => section => slot => 
++ BaseDialog.vue => dialog => section => slot =>
 + BaseDialog.vue => dialog => menu => slot => actions
 + BaseDialog.vue => styling => scoped
 + import BaseDialog in main.js
@@ -84,7 +84,7 @@
 + pass a close method from AddResource to base-dialog, @close = "confirmError"
 + emit the close method in BaseDialog.vue
 + emit the close method outside dialog in BaseDialog.vue
-+ emit the close method in actions slot in a base button with Close caption 
++ emit the close method in actions slot in a base button with Close caption
 - 目前有 3 中方式关闭 dialog，但实际上是 2 种，第三种是第一种的 fall back solution
 
 + add removeResource method in TheResources.vue with resId param
@@ -95,5 +95,34 @@
 + user splice in removeResource
 
 + add teleport in BaseDialog.vue to wrap up all. => to="body"
-+ 
+```
+
+2. implement log
+
+```diff
+$ vue create
++ main.js
++ App.vue
++ UI / BaseDialog / BaseButton / BaseCard
++ layouts / TheHeader / TheResources
++ StoredResources / AddResource
++ LearningResource
+```
+
+3. reproduce log
+
+```diff
+$ vue create app-11-rep // vue3
+
+- phrase 1:
++ create two components in folder /components/layouts, TheHeader and TheResources
++ add H1 tag in TheHeader and TheResources
++ add styling in TheHeader
++ add styling in TheResources
++ add styling in App.vue
++ Add the two components in App.vue
++ show H1 tags in Browser
+
+- phrase 2:
+
 ```

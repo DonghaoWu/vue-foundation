@@ -1,4 +1,4 @@
-# vue-app-learning-resource
+# app-11-rep
 
 ## Project setup
 ```

@@ -19,12 +19,13 @@
 </template>
 
 <script>
-import StoredResources from './StoredResource.vue';
-import AddSource from './AddSource';
+import StoredResources from '../StoredResources.vue';
+import AddResource from '../AddResource';
+
 export default {
   components: {
     StoredResources,
-    AddSource,
+    AddResource,
   },
   data() {
     return {
@@ -63,11 +64,9 @@ export default {
         description,
         link,
       });
+      this.selectedTab = 'stored-resources';
     },
     removeResource(resId) {
-      // this.storedResources = this.storedResources.filter(
-      //   (res) => res.id !== resId
-      // );
       const resIndex = this.storedResources.findIndex(
         (res) => res.id === resId
       );
@@ -79,7 +78,7 @@ export default {
       return this.selectedTab === 'stored-resources' ? null : 'flat';
     },
     addResButtonMode() {
-      return this.selectedTab === 'add-resources' ? null : 'flat';
+      return this.selectedTab === 'add-resource' ? null : 'flat';
     },
   },
 };
