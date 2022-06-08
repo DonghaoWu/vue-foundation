@@ -1,6 +1,6 @@
 <template>
   <div>
-    <the-header></the-header>
+    <the-header title='App-11-redo'></the-header>
     <the-resources></the-resources>
   </div>
 </template>

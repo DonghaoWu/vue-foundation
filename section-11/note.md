@@ -124,5 +124,13 @@ $ vue create app-11-rep // vue3
 + show H1 tags in Browser
 
 - phrase 2:
++ pass title from App.vue to TheHeader
++ Add more details in TheHeader
++ Add data in TheResources, storedResources
++ create a new component in folder /components/StoredResources.vue
++ add styling in StoredResources.vue
++ add StoredResources into TheResources
++ add a h1 tag in StoredResources.vue
 
+- phrase 3:
 ```
