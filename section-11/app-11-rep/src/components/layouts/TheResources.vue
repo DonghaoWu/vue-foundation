@@ -1,5 +1,5 @@
 <template>
-  <div><stored-resources></stored-resources></div>
+  <stored-resources></stored-resources>
 </template>
 
 <script>
@@ -11,6 +11,7 @@ export default {
   provide() {
     return {
       resources: this.storedResources,
+      deleteResource: this.removeResource,
     };
   },
   data() {
@@ -30,6 +31,14 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    removeResource(resId) {
+      const resIndex = this.storedResources.findIndex(
+        (res) => res.id === resId
+      );
+      this.storedResources.splice(resIndex, 1);
+    },
   },
 };
 </script>

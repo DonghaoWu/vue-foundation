@@ -154,4 +154,17 @@ $ vue create app-11-rep // vue3
 + add styling in BaseCard.vue
 + register BaseCard.vue in main.js
 + Add BaseCard into the li tag in LearningResources.vue
+
+- phrase 6:
++ create a new UI component in folder /components/UI/BaseButton.vue
++ apply slot in BaseButton.vue
++ add styling in BaseButton.vue
++ register BaseButton.vue in main.js
++ Add BaseButton into the BaseCard tag in LearningResources.vue
++ Pass text 'Delete' as BaseButton slot content
++ Add a method in TheResources.vue, called 'removeResource', with one parameter 'resId', to delete one data in stored resources (using split not filter)
++ provide the new method in TheResources
++ inject the method in Learingresources.vue
++ attach the method to click action in BaseButton in LearningResources.vue
+- now you should be able to delete a resource by clicking the 'Delete' button.
 ```
