@@ -1,9 +1,15 @@
 <template>
-  <h1>This is StoredResources.vue</h1>
+  <div>
+    <learning-resources></learning-resources>
+  </div>
 </template>
 
 <script>
-export default {};
+import LearningResources from './LearningResources.vue';
+export default {
+  components: { LearningResources },
+  inject: ['resources'],
+};
 </script>
 
 <style scoped>

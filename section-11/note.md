@@ -133,4 +133,12 @@ $ vue create app-11-rep // vue3
 + add a h1 tag in StoredResources.vue
 
 - phrase 3:
++ pass the storedData from TheResources to StoredResources through provide()
++ receive the data in StoredResources by using inject
++ create a new component in folder /components/LearningResources.vue
++ add styling in LearningResources.vue
++ import LearningResources.vue in StoredResources.vue
++ add a h1 tag in LearningResources.vue
+
+
 ```

@@ -8,6 +8,11 @@ export default {
   components: {
     StoredResources,
   },
+  provide() {
+    return {
+      resources: this.storedResources,
+    };
+  },
   data() {
     return {
       storedResources: [
