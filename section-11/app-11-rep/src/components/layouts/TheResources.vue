@@ -1,12 +1,17 @@
 <template>
-  <stored-resources></stored-resources>
+  <div>
+    <stored-resources></stored-resources>
+    <add-resource></add-resource>
+  </div>
 </template>
 
 <script>
 import StoredResources from '../StoredResources.vue';
+import AddResource from '../AddResource.vue';
 export default {
   components: {
     StoredResources,
+    AddResource,
   },
   provide() {
     return {

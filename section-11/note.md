@@ -167,4 +167,12 @@ $ vue create app-11-rep // vue3
 + inject the method in Learingresources.vue
 + attach the method to click action in BaseButton in LearningResources.vue
 - now you should be able to delete a resource by clicking the 'Delete' button.
+
+- phrase 7
++ delete storedResources tag in TheResources
++ create a new component in folder /components/AddResource.vue
++ add a h1 tag in AddResource
++ import AddResource.vue in TheResources.vue
++ render AddResource
+- now you should be able to see the h1 tag from AddResource.
 ```
