@@ -140,5 +140,11 @@ $ vue create app-11-rep // vue3
 + import LearningResources.vue in StoredResources.vue
 + add a h1 tag in LearningResources.vue
 
-
+- phrase 4:
++ change <div> to <ul> in StoredResources
++ change <div> to <li> in LearningResources
++ pass the data that is from TheResources to StoredResources to LearningResources by using v-for
++ get the data in LearningResources.vue as props 
++ render the data in LearningResources.vue - id/description/title/link
++ add styling in StoredResources.vue
 ```

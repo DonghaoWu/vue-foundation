@@ -1,11 +1,15 @@
 <template>
-  <div>
-        <h1>This is LearningResources.vue</h1>
-  </div>
+  <li>
+    <h2>{{info.id}}</h2>
+    <h2>{{info.title}}</h2>
+    <h2>{{info.description}}</h2>
+  </li>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["info"],
+};
 </script>
 
 <style scoped>

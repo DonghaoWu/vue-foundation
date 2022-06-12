@@ -1,7 +1,11 @@
 <template>
-  <div>
-    <learning-resources></learning-resources>
-  </div>
+  <ul>
+    <learning-resources
+      v-for="info of resources"
+      :key="info.id"
+      :info="info"
+    ></learning-resources>
+  </ul>
 </template>
 
 <script>
