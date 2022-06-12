@@ -175,4 +175,14 @@ $ vue create app-11-rep // vue3
 + import AddResource.vue in TheResources.vue
 + render AddResource
 - now you should be able to see the h1 tag from AddResource.
+
+- phrase 8
++ add styling in AddResource.vue
++ add a form in AddResource within BaseCard
++ add a new method in AddResource, called 'submitData', get the input data with refs
++ create a new method in TheResources.vue, called 'addResource', apply unshift to add new data
++ provide addResource in TheResources.vue
++ inject addResource in AddResource
++ invoke addResource at the end of submitData
+- now you should be able to input a new resource in the form and render it at the top of the list.
 ```

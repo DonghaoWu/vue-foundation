@@ -17,6 +17,7 @@ export default {
     return {
       resources: this.storedResources,
       deleteResource: this.removeResource,
+      addResource: this.addResource,
     };
   },
   data() {
@@ -43,6 +44,14 @@ export default {
         (res) => res.id === resId
       );
       this.storedResources.splice(resIndex, 1);
+    },
+    addResource({ title, description, link }) {
+      this.storedResources.unshift({
+        id: new Date().toISOString(),
+        title,
+        description,
+        link,
+      });
     },
   },
 };
