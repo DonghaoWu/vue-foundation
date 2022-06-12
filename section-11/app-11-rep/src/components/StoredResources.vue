@@ -3,7 +3,10 @@
     <learning-resources
       v-for="info of resources"
       :key="info.id"
-      :info="info"
+      :id="info.id"
+      :description="info.description"
+      :title="info.title"
+      :link="info.link"
     ></learning-resources>
   </ul>
 </template>

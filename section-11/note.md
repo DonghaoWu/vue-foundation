@@ -144,7 +144,14 @@ $ vue create app-11-rep // vue3
 + change <div> to <ul> in StoredResources
 + change <div> to <li> in LearningResources
 + pass the data that is from TheResources to StoredResources to LearningResources by using v-for
-+ get the data in LearningResources.vue as props 
++ get the data in LearningResources.vue as props id/description/title/link
 + render the data in LearningResources.vue - id/description/title/link
 + add styling in StoredResources.vue
+
+- phrase 5:
++ create a new UI component in folder /components/UI/BaseCard.vue
++ apply slot in BaseCard.vue
++ add styling in BaseCard.vue
++ register BaseCard.vue in main.js
++ Add BaseCard into the li tag in LearningResources.vue
 ```
