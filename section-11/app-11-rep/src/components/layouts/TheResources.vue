@@ -1,7 +1,20 @@
 <template>
   <div>
-    <stored-resources></stored-resources>
-    <add-resource></add-resource>
+    <base-card>
+      <base-button
+        @click="setSelectedTab('stored-resources')"
+        :mode="storedResButtonMode"
+        >Stored Resources</base-button
+      >
+      <base-button
+        :mode="addResButtonMode"
+        @click="setSelectedTab('add-resource')"
+        >Add Resource</base-button
+      >
+    </base-card>
+    <keep-alive>
+      <component :is="selectedTab"></component>
+    </keep-alive>
   </div>
 </template>
 
@@ -36,6 +49,7 @@ export default {
           link: 'https://vuejs.org',
         },
       ],
+      selectedTab: 'stored-resources',
     };
   },
   methods: {
@@ -52,6 +66,18 @@ export default {
         description,
         link,
       });
+            this.selectedTab = 'stored-resources';
+    },
+    setSelectedTab(tab) {
+      this.selectedTab = tab;
+    },
+  },
+  computed: {
+    storedResButtonMode() {
+      return this.selectedTab === 'stored-resources' ? null : 'flat';
+    },
+    addResButtonMode() {
+      return this.selectedTab === 'add-resource' ? null : 'flat';
     },
   },
 };

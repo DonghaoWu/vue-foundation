@@ -199,4 +199,15 @@ $ vue create app-11-rep // vue3
 + attach the close method to click events, close button & outside the dialog
 + teloport BaseDialog to body level
 - now you should be able to see if you input is empty in any line of the form then you will see a dialog window with a close button.
+
+- phrase 10
++ delete the content of template in TheResources.vue
++ Add two BaseButtons in TheResources, wrapped by a BaseCard
++ create a new local data called `selectedTab`, default value is 'stored-resources',
++ create a new method in TheResources, called 'setSelectedTab', with one param, called 'tab', to modify selectedTab to the param.
++ attach the method to the two BaseButton
++ add two computed function, attach them to a variable called 'mode' that will be passed down to BaseButton
++ add keep-alive + component div below BaseCard in Theresources.vue
++ add `this.selectedTab = 'stored-resources';` at the end of addResource method in TheResources.vue so the app will redirect to storedResources tab after submit the data successfully.
+- now you should be able to implement to whole functionality.
 ```
