@@ -1,31 +1,51 @@
 <template>
-  <base-card>
-    <form @submit.prevent="submitData">
-      <div class="form-control">
-        <label for="title">Title</label>
-        <input id="title" name="title" type="text" ref="titleInput" />
-      </div>
-      <div class="form-control">
-        <label for="description">Description</label>
-        <textarea
-          id="description"
-          name="description"
-          rows="3"
-          ref="descriptionInput"
-        ></textarea>
-      </div>
-      <div class="form-control">
-        <label for="link">Link</label>
-        <input id="link" name="link" type="text" ref="linkInput" />
-      </div>
-      <div><base-button type="submit">Add Resource</base-button></div>
-    </form>
-  </base-card>
+  <div>
+    <base-dialog
+      v-if="inputIsInvalid"
+      title="Invalid input"
+      @closeDialog="closeAlertDialog"
+    >
+      <template #default>
+        <p>Unfortunately, at least one input value is invalid.</p>
+        <p>Please check your input</p>
+      </template>
+      <template #action>
+        <base-button @click="closeAlertDialog">Okay</base-button>
+      </template>
+    </base-dialog>
+    <base-card>
+      <form @submit.prevent="submitData">
+        <div class="form-control">
+          <label for="title">Title</label>
+          <input id="title" name="title" type="text" ref="titleInput" />
+        </div>
+        <div class="form-control">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="3"
+            ref="descriptionInput"
+          ></textarea>
+        </div>
+        <div class="form-control">
+          <label for="link">Link</label>
+          <input id="link" name="link" type="text" ref="linkInput" />
+        </div>
+        <div><base-button type="submit">Add Resource</base-button></div>
+      </form>
+    </base-card>
+  </div>
 </template>
 
 <script>
 export default {
   inject: ['addResource'],
+  data() {
+    return {
+      inputIsInvalid: false,
+    };
+  },
   methods: {
     submitData() {
       const title = this.$refs.titleInput.value;
@@ -43,6 +63,9 @@ export default {
       this.$refs.descriptionInput.value = '';
       this.$refs.linkInput.value = '';
       this.addResource({ title, description, link });
+    },
+    closeAlertDialog() {
+      this.inputIsInvalid = false;
     },
   },
 };

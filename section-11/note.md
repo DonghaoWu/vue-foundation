@@ -185,4 +185,18 @@ $ vue create app-11-rep // vue3
 + inject addResource in AddResource
 + invoke addResource at the end of submitData
 - now you should be able to input a new resource in the form and render it at the top of the list.
+
+- phrase 9
++ create a new UI component in folder /components/UI/BaseDialog.vue
++ apply slot in BaseDialog.vue
++ add styling in BaseDialog.vue
++ register BaseDialog.vue in main.js
++ Add BaseDialog into AddResource.vue, right above base-card
++ create a new local data called 'inputIsInvalid' to control the showing up of base-dialog, default value is false
++ if one of the input of the form is empty, set inputIsInvalid to true so the dialog will show up.
++ create a new method, called 'closedAlertDialog' in AddResource.vue, the method is going to turn 'inputIsInvalid' off, attach the method to close event of BaseDialog
++ emits the close method in BaseDialog
++ attach the close method to click events, close button & outside the dialog
++ teloport BaseDialog to body level
+- now you should be able to see if you input is empty in any line of the form then you will see a dialog window with a close button.
 ```
