@@ -715,3 +715,463 @@ const router = createRouter({
   linkActiveClass: 'router-link-active', // default
 });
 ```
+
+16. Controlling scroll behavior
+
+- main.js
+
+```js
+import TeamsFooter from './components/teams/TeamsFooter.vue'
+import UsersFooter from './components/users/UsersFooter.vue'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      name:'teams'
+      path: '/teams',
+      component: {default: TeamList, footer: TeamsFooter},
+      children: [
+        {
+          name:'team-members',
+          path: ':teamId',
+          component: TeamMembers,
+          props: true,
+        },
+      ],
+    },
+    {
+      path: '/users',
+      component: {
+        default: UsersList,
+        footer: UsersFooter
+      },
+    },
+    {
+      path: '/:notFound(.*)',
+      component: NotFound,
+    },
+  ],
+  linkActiveClass: 'router-link-active', // default
+  scrollBehavior(to, from, savedPositioin){
+    if(savedPosition){
+      return savedPosition
+    }
+    return {
+      left:0,
+      right:0
+    }
+  }
+});
+```
+
+16. Introducing navigation guards
+
+```js
+import TeamsFooter from './components/teams/TeamsFooter.vue'
+import UsersFooter from './components/users/UsersFooter.vue'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      name:'teams'
+      path: '/teams',
+      component: {default: TeamList, footer: TeamsFooter},
+      children: [
+        {
+          name:'team-members',
+          path: ':teamId',
+          component: TeamMembers,
+          props: true,
+        },
+      ],
+    },
+    {
+      path: '/users',
+      component: {
+        default: UsersList,
+        footer: UsersFooter
+      },
+    },
+    {
+      path: '/:notFound(.*)',
+      component: NotFound,
+    },
+  ],
+  linkActiveClass: 'router-link-active', // default
+    scrollBehavior(to, from, savedPositioin){
+    if(savedPosition){
+      return savedPosition
+    }
+    return {
+      left:0,
+      right:0
+    }
+  }
+});
+
+router.beforeEach(function(to, from, next){
+  // next(false)
+  if(to.name === 'team-members'){
+    next()
+  }else{
+    next({name:'team-members', params: {teamId:'t2'}})
+  }
+})
+```
+
+17. Diving deeper into Navigation guards
+
+```js
+import TeamsFooter from './components/teams/TeamsFooter.vue'
+import UsersFooter from './components/users/UsersFooter.vue'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      name:'teams'
+      path: '/teams',
+      component: {default: TeamList, footer: TeamsFooter},
+      children: [
+        {
+          name:'team-members',
+          path: ':teamId',
+          component: TeamMembers,
+          props: true,
+        },
+      ],
+    },
+    {
+      path: '/users',
+      component: {
+        default: UsersList,
+        footer: UsersFooter
+      },
+      beforeEnter(to, from, next){
+        next()
+      }
+    },
+    {
+      path: '/:notFound(.*)',
+      component: NotFound,
+    },
+  ],
+  linkActiveClass: 'router-link-active', // default
+    scrollBehavior(to, from, savedPositioin){
+    if(savedPosition){
+      return savedPosition
+    }
+    return {
+      left:0,
+      right:0
+    }
+  }
+});
+
+router.beforeEach(function(to, from, next){
+  // next(false)
+  // if(to.name === 'team-members'){
+  //   next()
+  // }else{
+  //   next({name:'team-members', params: {teamId:'t2'}})
+  // }
+  next()
+})
+```
+
+- UserList.vue
+
+```html
+<template>
+  <button @click="confirmInput">Confirm</button>
+  <ul>
+    <user-item
+      v-for="user in users"
+      :key="user.id"
+      :name="user.fullName"
+      :role="user.role"
+    ></user-item>
+  </ul>
+</template>
+
+<script>
+  import UserItem from './UserItem.vue';
+
+  export default {
+    components: {
+      UserItem,
+    },
+    inject: ['users'],
+    methods: {
+      confirmInput() {
+        this.$router.push('/teams');
+      },
+    },
+    beforerouterEnter(to, from, next) {
+      next();
+    },
+  };
+</script>
+```
+
+- TeamMembers.vue
+
+```html
+<template>
+  <section>
+    <h2>{{ teamName }}</h2>
+    <ul>
+      <user-item
+        v-for="member in members"
+        :key="member.id"
+        :id="team.id"
+        :name="member.fullName"
+        :role="member.role"
+      ></user-item>
+    </ul>
+    <router-link to="/teams/t2">Go to Team 2</router-link>
+  </section>
+</template>
+
+<script>
+  import UserItem from '../users/UserItem.vue';
+
+  export default {
+    inject: ['users', 'teams'],
+    components: {
+      UserItem,
+    },
+    data() {
+      return {
+        teamName: '',
+        members: '',
+      };
+    },
+    methods: {
+      loadTeamMembers(route) {
+        const teamId = route.params.teamId;
+        const selectedTeam = this.teams.find((team) => team.id === teamId);
+        const members = selectedTeam.members;
+        const selectedMembers = [];
+        for (let member of menbers) {
+          const selectedUser = this.users.find((user) => user.id === member);
+          selectedMembers.push(selectedUser);
+        }
+        this.members = selectedMembers;
+        this.teamName = selectedTeam.name;
+      },
+    },
+    created() {
+      this.loadTeamMembers(this.$route);
+    },
+    beforeRouteUpdated(to, from, next) {
+      this.loadTeamMembers(to.params.teamId);
+      next();
+    },
+    watch: {
+      $route(newValue) {
+        this.loadTeamMembers(newValue);
+      },
+    },
+  };
+</script>
+```
+
+18. The global afterEach guard
+
+19. Beyond Entering: Route Leave Guards
+
+- main.js
+
+```js
+import TeamsFooter from './components/teams/TeamsFooter.vue'
+import UsersFooter from './components/users/UsersFooter.vue'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      name:'teams'
+      path: '/teams',
+      component: {default: TeamList, footer: TeamsFooter},
+      children: [
+        {
+          name:'team-members',
+          path: ':teamId',
+          component: TeamMembers,
+          props: true,
+        },
+      ],
+    },
+    {
+      path: '/users',
+      component: {
+        default: UsersList,
+        footer: UsersFooter
+      },
+      beforeEnter(to, from, next){
+        next()
+      }
+    },
+    {
+      path: '/:notFound(.*)',
+      component: NotFound,
+    },
+  ],
+  linkActiveClass: 'router-link-active', // default
+    scrollBehavior(to, from, savedPositioin){
+    if(savedPosition){
+      return savedPosition
+    }
+    return {
+      left:0,
+      right:0
+    }
+  }
+});
+
+router.beforeEach(function(to, from, next){
+  // next(false)
+  // if(to.name === 'team-members'){
+  //   next()
+  // }else{
+  //   next({name:'team-members', params: {teamId:'t2'}})
+  // }
+  next()
+})
+```
+
+- UserList.vue
+
+```html
+<template>
+  <button @click="confirmInput">Confirm</button>
+  <button @click="saveChanges">Save Changes</button>
+  <ul>
+    <user-item
+      v-for="user in users"
+      :key="user.id"
+      :name="user.fullName"
+      :role="user.role"
+    ></user-item>
+  </ul>
+</template>
+
+<script>
+  import UserItem from './UserItem.vue';
+
+  export default {
+    components: {
+      UserItem,
+    },
+    inject: ['users'],
+    data() {
+      return { changesSaved: false };
+    },
+    methods: {
+      confirmInput() {
+        this.$router.push('/teams');
+      },
+      saveChanges() {
+        this.changesSaved = true;
+      },
+    },
+    beforerouterEnter(to, from, next) {
+      next();
+    },
+    beforeRouteLeave(to, from, next) {
+      if (this.changesSaved) {
+        next();
+      } else {
+        const message = confirm('Are you sure? You got unsaved changes!');
+        next(message);
+      }
+    },
+    unmounted() {
+      console.log('unmounted');
+    },
+  };
+</script>
+```
+
+19. Utillizing Route Metadata
+
+- main.js
+
+```js
+import TeamsFooter from './components/teams/TeamsFooter.vue'
+import UsersFooter from './components/users/UsersFooter.vue'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      name:'teams'
+      path: '/teams',
+      meta: {needsAuth: true},
+      component: {default: TeamList, footer: TeamsFooter},
+      children: [
+        {
+          name:'team-members',
+          path: ':teamId',
+          component: TeamMembers,
+          props: true,
+        },
+      ],
+    },
+    {
+      path: '/users',
+      component: {
+        default: UsersList,
+        footer: UsersFooter
+      },
+      beforeEnter(to, from, next){
+        next()
+      }
+    },
+    {
+      path: '/:notFound(.*)',
+      component: NotFound,
+    },
+  ],
+  linkActiveClass: 'router-link-active', // default
+    scrollBehavior(to, from, savedPositioin){
+    if(savedPosition){
+      return savedPosition
+    }
+    return {
+      left:0,
+      right:0
+    }
+  }
+});
+
+router.beforeEach(function(to, from, next){
+  // next(false)
+  // if(to.name === 'team-members'){
+  //   next()
+  // }else{
+  //   next({name:'team-members', params: {teamId:'t2'}})
+  // }
+  if(to.meta.needsAuth){
+    console.log('needs auth!');
+    next()
+  }else{
+    next()
+  }
+})
+```
+
+20. Organizing route files
+
+```diff
++ pages: NotFound.vue / TeamsFooter / TeamsList / UsersFooter / UsersList.vue
+
++ router.js
+- export default router
++ import router from './router.js'
+```
+
+21. 
